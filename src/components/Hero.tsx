@@ -1,10 +1,25 @@
 
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Play, ArrowRight } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section-dark';
+import { useEffect } from 'react';
+
+// Optimize images with proper dimensions
+const HERO_IMAGES = {
+  light: 'https://t3.ftcdn.net/jpg/05/62/71/86/360_F_562718625_BM93noP9JDAR8kiBPfRy0h4WTvUwYXNH.jpg',
+  dark: 'https://t3.ftcdn.net/jpg/05/62/71/86/360_F_562718625_BM93noP9JDAR8kiBPfRy0h4WTvUwYXNH.jpg'
+};
 
 const Hero = () => {
+  // Preload hero images
+  useEffect(() => {
+    const preloadImages = () => {
+      [HERO_IMAGES.light, HERO_IMAGES.dark].forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+    preloadImages();
+  }, []);
+
   return (
     <HeroSection
       title="Premium Fitness Training Platform"
@@ -16,8 +31,8 @@ const Hero = () => {
       ctaText="Join Today"
       ctaHref="/auth"
       bottomImage={{
-        light: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&h=600",
-        dark: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&h=600",
+        light: HERO_IMAGES.light,
+        dark: HERO_IMAGES.dark,
       }}
       gridOptions={{
         angle: 65,

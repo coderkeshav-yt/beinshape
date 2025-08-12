@@ -114,17 +114,21 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               </div>
             </div>
             {bottomImage && (
-              <div className="mt-32 mx-10 relative z-10">
-                <img
-                  src={bottomImage.light}
-                  className="w-full shadow-lg rounded-lg border border-gray-200 dark:hidden"
-                  alt="Dashboard preview"
-                />
-                <img
-                  src={bottomImage.dark}
-                  className="hidden w-full shadow-lg rounded-lg border border-gray-800 dark:block"
-                  alt="Dashboard preview"
-                />
+              <div className="mt-12 md:mt-32 mx-0 sm:mx-2 md:mx-10 relative z-10">
+                <div className="relative w-full aspect-[4/3] sm:aspect-video overflow-hidden rounded-none sm:rounded-lg border border-gray-200 dark:border-gray-800 shadow-lg">
+                  <img
+                    src={bottomImage.light}
+                    className="w-full h-full object-cover dark:hidden scale-110 sm:scale-100"
+                    alt="Dashboard preview"
+                    loading="lazy"
+                  />
+                  <img
+                    src={bottomImage.dark}
+                    className="hidden w-full h-full object-cover dark:block scale-110 sm:scale-100"
+                    alt="Dashboard preview"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             )}
           </div>

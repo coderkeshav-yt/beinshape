@@ -6,25 +6,25 @@ import { Award, Users, Target, Heart, Star, CheckCircle, Zap, Trophy } from 'luc
 const About = () => {
   const team = [
     {
-      name: "Alex Rodriguez",
+      name: "Ravi prakash",
       role: "Founder & Head Trainer",
       image: "/placeholder.svg",
       description: "15+ years in fitness training with certifications from ACSM and NASM"
     },
     {
-      name: "Sarah Johnson",
+      name: "keshav singh",
       role: "Nutrition Specialist",
       image: "/placeholder.svg", 
       description: "Registered Dietitian specializing in sports nutrition and wellness"
     },
     {
-      name: "Mike Chen",
+      name: "keshav singh",
       role: "Strength & Conditioning Coach",
       image: "/placeholder.svg",
       description: "Former Olympic trainer with expertise in functional movement and rehabilitation"
     },
     {
-      name: "Emma Williams",
+      name: "keshav singh",
       role: "Yoga & Wellness Instructor",
       image: "/placeholder.svg",
       description: "Certified yoga instructor focusing on mind-body connection and flexibility"
