@@ -10,9 +10,21 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BookOpen, Clock, Users, Star, ChevronRight, Play, Search, Filter, TrendingUp, Award, Shield, Zap } from 'lucide-react';
+import { lazy, Suspense } from 'react';
 import CircularNav from '@/components/CircularNav';
 import BatchContentView from '@/components/BatchContentView';
 import RazorpayPayment from '@/components/RazorpayPayment';
+import LoadingSpinner from '@/components/ui/loading-spinner';
+
+// Lazy load the Footer component
+const Footer = lazy(() => import('@/components/Footer'));
+
+// Loading component for lazy loaded components
+const LazyLoadedComponent = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center"><LoadingSpinner /></div>}>
+    {children}
+  </Suspense>
+);
 
 const Batches = () => {
   const { user } = useAuth();
@@ -324,20 +336,21 @@ const Batches = () => {
                               }}
                               variant="outline"
                               size="lg"
-                              className="w-full font-dejanire group glass border-0"
+                              className="w-full font-dejanire bg-white/90 hover:bg-white text-gray-800 dark:bg-gray-800/80 dark:hover:bg-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 hover:border-primary/50 dark:hover:border-primary/60 shadow-sm hover:shadow-md transition-all duration-300 group relative overflow-hidden"
                             >
+                              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                               <BookOpen className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                              View Details
+                              <span className="relative">View Details</span>
                               <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Button>
                             <Button
                               onClick={() => handleEnroll(batch.id)}
                               size="lg"
-                              className="w-full font-dejanire group relative overflow-hidden"
+                              className="w-full font-dejanire bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-white shadow-md hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
                             >
-                              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                              <Zap className="w-4 h-4 mr-2 relative z-10" />
-                              <span className="relative z-10">Enroll Now • {formatPrice(batch.price)}</span>
+                              <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                              <Zap className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                              <span className="relative">Enroll Now • {formatPrice(batch.price)}</span>
                             </Button>
                           </div>
                         )}
@@ -442,6 +455,11 @@ const Batches = () => {
           </div>
         </div>
       </div>
+      
+      {/* Footer Section */}
+      <LazyLoadedComponent>
+        <Footer />
+      </LazyLoadedComponent>
     </>
   );
 };

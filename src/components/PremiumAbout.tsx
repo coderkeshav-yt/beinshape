@@ -65,24 +65,28 @@ const PremiumAbout = () => {
           </div>
 
           {/* Right Content */}
-          <div className="relative">
-            <div className="relative z-10 bg-gradient-to-br from-[#e3bd30] to-[#f4d03f] rounded-3xl p-8 shadow-2xl">
-              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                  Our Mission
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  To make premium fitness training accessible to everyone, providing world-class 
-                  programs that deliver real results and lasting lifestyle changes.
-                </p>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#e3bd30] mb-1">5+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#e3bd30] mb-1">50+</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Expert Trainers</div>
+          <div className="relative w-full">
+            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl w-full aspect-[4/3] sm:aspect-auto">
+              <div className="w-full h-full">
+                <img
+                  src="https://sparkmembership.com/wp-content/smush-webp/2023/04/Gym-Mission-Statement.png.webp"
+                  alt="Our Mission Statement"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: 'center 30%' }}
+                  loading="lazy"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70 md:to-black/50 flex flex-col justify-end">
+                <div className="p-4 sm:p-6">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                    <div className="text-center bg-black/40 backdrop-blur-sm py-2 sm:py-3 rounded-lg">
+                      <div className="text-xl sm:text-2xl font-bold text-[#e3bd30] mb-0 sm:mb-1">5+</div>
+                      <div className="text-xs sm:text-sm text-white font-medium">Years Experience</div>
+                    </div>
+                    <div className="text-center bg-black/40 backdrop-blur-sm py-2 sm:py-3 rounded-lg">
+                      <div className="text-xl sm:text-2xl font-bold text-[#e3bd30] mb-0 sm:mb-1">50+</div>
+                      <div className="text-xs sm:text-sm text-white font-medium">Expert Trainers</div>
+                    </div>
                   </div>
                 </div>
               </div>
