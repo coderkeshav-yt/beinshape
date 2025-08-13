@@ -1,4 +1,4 @@
-# Shape Circle - Modern Web Application
+# Be in Shape web app
 
 A modern, responsive web application built with React, TypeScript, and Vite, featuring a clean UI powered by shadcn/ui and Tailwind CSS.
 
