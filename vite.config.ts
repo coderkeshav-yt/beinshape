@@ -1,14 +1,16 @@
-import { defineConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+// @ts-ignore - lovable-tagger is a dev dependency
 import { componentTagger } from "lovable-tagger";
 import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode }: { mode: string }): UserConfig => {
   const isProduction = mode === 'production';
   
   return {
+    base: isProduction ? '/' : '/',
     server: {
       host: "::",
       port: 8080,
@@ -40,7 +42,7 @@ export default defineConfig(({ mode }) => {
       cssMinify: isProduction ? 'esbuild' : false,
       rollupOptions: {
         output: {
-          manualChunks: (id) => {
+          manualChunks: (id: string) => {
             if (id.includes('node_modules')) {
               if (id.includes('@radix-ui')) {
                 return 'radix';

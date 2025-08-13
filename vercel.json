@@ -11,12 +11,18 @@
       }
     }
   ],
-  "buildCommand": "npm run build",
-  "installCommand": "npm install --legacy-peer-deps",
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "src": "/_next/static/(.*)",
+      "dest": "/_next/static/$1"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
     },
     {
       "src": "/assets/(.*)",
