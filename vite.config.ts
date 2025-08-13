@@ -13,7 +13,9 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
     base: isProduction ? '/' : '/',
     define: {
       'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
+      'process.env.BASE_URL': JSON.stringify(isProduction ? '/' : '/')
     },
+    publicDir: 'public',
     server: {
       host: "::",
       port: 8080,
