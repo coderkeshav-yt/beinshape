@@ -62,6 +62,9 @@ export default defineConfig(({ command, mode }: { command: string, mode: string 
               return 'vendor';
             }
           },
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash][extname]',
         },
       },
     },
