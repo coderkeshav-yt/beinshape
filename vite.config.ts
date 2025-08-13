@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }: { mode: string }): UserConfig => {
+export default defineConfig(({ command, mode }: { command: string, mode: string }): UserConfig => {
   const isProduction = mode === 'production';
   
   return {
@@ -16,36 +16,10 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       'process.env.BASE_URL': JSON.stringify(isProduction ? '/' : '/')
     },
     publicDir: 'public',
-    build: {
-      outDir: 'dist',
-      assetsDir: 'assets',
-      emptyOutDir: true,
-      sourcemap: isProduction ? false : 'inline',
-      minify: isProduction ? 'terser' : false,
-      cssCodeSplit: true,
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('@radix-ui')) return 'radix';
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'react';
-              if (id.includes('@tanstack') || id.includes('date-fns') || id.includes('framer-motion')) return 'vendor';
-              return 'vendor';
-            }
-          },
-          entryFileNames: 'assets/[name].[hash].js',
-          chunkFileNames: 'assets/[name].[hash].js',
-          assetFileNames: 'assets/[name].[hash][ext]'
-        }
-      },
-      terserOptions: {
-        compress: {
-          drop_console: isProduction,
-          drop_debugger: isProduction
-        }
-      }
-    },
     server: {
+      headers: {
+        'Content-Type': 'application/javascript',
+      },
       host: "::",
       port: 8080,
     },
@@ -74,23 +48,17 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       outDir: 'dist',
       assetsDir: 'assets',
       emptyOutDir: true,
-      sourcemap: isProduction ? 'hidden' : false,
-      minify: isProduction ? 'esbuild' : false,
-      cssMinify: isProduction ? 'esbuild' : false,
-      chunkSizeWarningLimit: 1000, // Increase chunk size warning limit
+      sourcemap: isProduction ? false : 'inline',
+      minify: isProduction ? 'terser' : false,
+      cssCodeSplit: true,
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks: (id: string) => {
             if (id.includes('node_modules')) {
-              if (id.includes('@radix-ui')) {
-                return 'radix';
-              }
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-                return 'react';
-              }
-              if (id.includes('@tanstack') || id.includes('date-fns') || id.includes('framer-motion')) {
-                return 'vendor';
-              }
+              if (id.includes('@radix-ui')) return 'radix';
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'react';
+              if (id.includes('@tanstack') || id.includes('date-fns') || id.includes('framer-motion')) return 'vendor';
               return 'vendor';
             }
           },
