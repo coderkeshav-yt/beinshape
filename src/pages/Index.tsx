@@ -1,24 +1,13 @@
 
-import { lazy, Suspense } from 'react';
 import CircularNav from '@/components/CircularNav';
 import Hero from '@/components/Hero';
-import LoadingSpinner from '@/components/ui/loading-spinner';
-
-// Lazy load components that aren't immediately visible
-const Features = lazy(() => import('@/components/Features'));
-const Pricing = lazy(() => import('@/components/Pricing'));
-const Testimonials = lazy(() => import('@/components/Testimonials'));
-const FAQ = lazy(() => import('@/components/FAQ'));
-const Footer = lazy(() => import('@/components/Footer'));
-const PremiumStats = lazy(() => import('@/components/PremiumStats'));
-const PremiumAbout = lazy(() => import('@/components/PremiumAbout'));
-
-// Loading component for lazy loaded components
-const LazyLoadedComponent = ({ children }: { children: React.ReactNode }) => (
-  <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center"><LoadingSpinner /></div>}>
-    {children}
-  </Suspense>
-);
+import Features from '@/components/Features';
+import Pricing from '@/components/Pricing';
+import Testimonials from '@/components/Testimonials';
+import FAQ from '@/components/FAQ';
+import Footer from '@/components/Footer';
+import PremiumStats from '@/components/PremiumStats';
+import PremiumAbout from '@/components/PremiumAbout';
 
 const Index = () => {
   return (

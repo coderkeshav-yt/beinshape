@@ -26,7 +26,6 @@ export default defineConfig(({ command, mode }: { command: string, mode: string 
     plugins: [
       react({
         jsxImportSource: '@emotion/react',
-        // @ts-ignore - Emotion plugin is needed but types are not properly exposed
         babel: {
           plugins: ['@emotion/babel-plugin'],
         },
@@ -54,22 +53,58 @@ export default defineConfig(({ command, mode }: { command: string, mode: string 
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: (id: string) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('@radix-ui')) return 'radix';
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'react';
-              if (id.includes('@tanstack') || id.includes('date-fns') || id.includes('framer-motion')) return 'vendor';
-              return 'vendor';
-            }
+          manualChunks: {
+            'react-vendor': [
+              'react',
+              'react-dom',
+              'react-router-dom',
+              'react-router',
+              'react-helmet-async',
+            ],
+            'ui-vendor': [
+              '@radix-ui/react-dialog',
+              '@radix-ui/react-dropdown-menu',
+              '@radix-ui/react-slot',
+              '@radix-ui/react-toast',
+              '@radix-ui/react-tooltip',
+              'framer-motion',
+              'lucide-react',
+            ],
+            'utils-vendor': [
+              'date-fns',
+              'clsx',
+              'tailwind-merge',
+              '@tanstack/react-query',
+              'zod',
+            ],
           },
           entryFileNames: 'assets/[name]-[hash].js',
           chunkFileNames: 'assets/[name]-[hash].js',
           assetFileNames: 'assets/[name]-[hash][extname]',
         },
       },
+      terserOptions: {
+        compress: {
+          drop_console: isProduction,
+          drop_debugger: isProduction,
+        },
+      },
     },
     optimizeDeps: {
-      include: ['react', 'react-dom', 'react-router-dom'],
+      include: [
+        'react',
+        'react-dom',
+        'react-router-dom',
+        '@supabase/supabase-js',
+        '@tanstack/react-query',
+        'framer-motion',
+        'lucide-react',
+        'date-fns',
+        'clsx',
+        'tailwind-merge',
+        'zod',
+        'react-helmet-async',
+      ],
       esbuildOptions: {
         target: 'es2020',
       },
