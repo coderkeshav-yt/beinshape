@@ -11,6 +11,9 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
   
   return {
     base: isProduction ? '/' : '/',
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
+    },
     server: {
       host: "::",
       port: 8080,
@@ -37,9 +40,13 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       },
     },
     build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      emptyOutDir: true,
       sourcemap: isProduction ? 'hidden' : false,
       minify: isProduction ? 'esbuild' : false,
       cssMinify: isProduction ? 'esbuild' : false,
+      chunkSizeWarningLimit: 1000, // Increase chunk size warning limit
       rollupOptions: {
         output: {
           manualChunks: (id: string) => {
@@ -58,7 +65,6 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
           },
         },
       },
-      chunkSizeWarningLimit: 1000, // Increase chunk size warning limit
     },
     optimizeDeps: {
       include: ['react', 'react-dom', 'react-router-dom'],
