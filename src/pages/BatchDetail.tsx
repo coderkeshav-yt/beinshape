@@ -9,27 +9,32 @@ import CircularNav from '@/components/CircularNav';
 import RazorpayPayment from '@/components/RazorpayPayment';
 
 const BatchDetail = () => {
-  const { identifier } = useParams<{ identifier: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const { data: batch, isLoading } = useQuery({
-    queryKey: ['batch', identifier],
+    queryKey: ['batch', id],
     queryFn: async () => {
-      if (!identifier) throw new Error('Batch identifier is required');
+      if (!id) throw new Error('Batch ID is required');
       
-      // For now, just use ID lookup until slug field is added
+      console.log('Fetching batch with ID:', id);
+      
       const { data, error } = await supabase
         .from('batches')
         .select('*')
-        .eq('id', identifier)
+        .eq('id', id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching batch:', error);
+        throw error;
+      }
 
+      console.log('Batch data:', data);
       return data;
     },
-    enabled: !!identifier,
+    enabled: !!id,
   });
 
   const { data: userEnrollments } = useQuery({
@@ -88,6 +93,8 @@ const BatchDetail = () => {
           <div className="container mx-auto px-4 py-12">
             <div className="text-center">
               <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Batch not found</h1>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">Batch ID: {id}</p>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">Check the console for debug information.</p>
               <button
                 onClick={handleBack}
                 className="px-6 py-3 bg-gradient-to-r from-[#e3bd30] to-[#f4d03f] text-black rounded-lg hover:from-[#d4a82a] hover:to-[#e6c235] font-semibold transition-all duration-300"
