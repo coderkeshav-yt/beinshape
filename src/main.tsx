@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import App from './App-simple.tsx'
 import './index.css'
+import App from './App-simple.tsx'
 
 console.log('Loading your website...');
 
