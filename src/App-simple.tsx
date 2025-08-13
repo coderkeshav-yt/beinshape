@@ -9,6 +9,13 @@ import { AuthProvider } from "@/hooks/useAuth";
 // Direct imports (no lazy loading)
 import Index from './pages/Index';
 import Auth from './pages/Auth';
+import About from './pages/About';
+import AdminDashboard from './pages/AdminDashboard';
+import BatchDetail from './pages/BatchDetail';
+import Batches from './pages/Batches';
+import Contact from './pages/Contact';
+import Dashboard from './pages/Dashboard';
+import Gallery from './pages/Gallery';
 import NotFound from './pages/NotFound';
 
 // Error Boundary Component
@@ -76,6 +83,13 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/batches" element={<Batches />} />
+              <Route path="/batches/:id" element={<BatchDetail />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>

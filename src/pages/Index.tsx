@@ -1,4 +1,4 @@
-
+import { lazy, Suspense } from 'react';
 import CircularNav from '@/components/CircularNav';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
@@ -8,6 +8,14 @@ import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 import PremiumStats from '@/components/PremiumStats';
 import PremiumAbout from '@/components/PremiumAbout';
+import LoadingSpinner from '@/components/ui/loading-spinner';
+
+// Loading component for lazy loaded components
+const LazyLoadedComponent = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center"><LoadingSpinner /></div>}>
+    {children}
+  </Suspense>
+);
 
 const Index = () => {
   return (
