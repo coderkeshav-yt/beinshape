@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react({
         jsxImportSource: '@emotion/react',
+        // @ts-ignore - Emotion plugin is needed but types are not properly exposed
         babel: {
           plugins: ['@emotion/babel-plugin'],
         },
@@ -39,10 +40,19 @@ export default defineConfig(({ mode }) => {
       cssMinify: isProduction ? 'esbuild' : false,
       rollupOptions: {
         output: {
-          manualChunks: {
-            react: ['react', 'react-dom', 'react-router-dom'],
-            vendor: ['@tanstack/react-query', 'date-fns', 'framer-motion'],
-            ui: ['@radix-ui/*', 'class-variance-authority', 'clsx'],
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('@radix-ui')) {
+                return 'radix';
+              }
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+                return 'react';
+              }
+              if (id.includes('@tanstack') || id.includes('date-fns') || id.includes('framer-motion')) {
+                return 'vendor';
+              }
+              return 'vendor';
+            }
           },
         },
       },

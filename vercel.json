@@ -5,11 +5,19 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "dist",
+        "installCommand": "npm install --legacy-peer-deps",
+        "buildCommand": "npm run build"
       }
     }
   ],
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --legacy-peer-deps",
   "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    },
     {
       "src": "/assets/(.*)",
       "headers": {
