@@ -16,6 +16,35 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       'process.env.BASE_URL': JSON.stringify(isProduction ? '/' : '/')
     },
     publicDir: 'public',
+    build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      emptyOutDir: true,
+      sourcemap: isProduction ? false : 'inline',
+      minify: isProduction ? 'terser' : false,
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('@radix-ui')) return 'radix';
+              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) return 'react';
+              if (id.includes('@tanstack') || id.includes('date-fns') || id.includes('framer-motion')) return 'vendor';
+              return 'vendor';
+            }
+          },
+          entryFileNames: 'assets/[name].[hash].js',
+          chunkFileNames: 'assets/[name].[hash].js',
+          assetFileNames: 'assets/[name].[hash][ext]'
+        }
+      },
+      terserOptions: {
+        compress: {
+          drop_console: isProduction,
+          drop_debugger: isProduction
+        }
+      }
+    },
     server: {
       host: "::",
       port: 8080,
