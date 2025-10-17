@@ -10,10 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BookOpen, Clock, Users, Star, ChevronRight, Play, Search, Filter, TrendingUp, Award, Shield, Zap } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { lazy, Suspense } from 'react';
 import CircularNav from '@/components/CircularNav';
-import BatchContentView from '@/components/BatchContentView';
-import RazorpayPayment from '@/components/RazorpayPayment';
+// Content view removed from Batches page; details open on their own route
 import LoadingSpinner from '@/components/ui/loading-spinner';
 
 // Lazy load the Footer component
@@ -29,7 +29,8 @@ const LazyLoadedComponent = ({ children }: { children: React.ReactNode }) => (
 const Batches = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [selectedBatch, setSelectedBatch] = useState<any>(null);
+  const [qrBatch, setQrBatch] = useState<any>(null);
+  const [qrOpen, setQrOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('newest');
@@ -90,15 +91,10 @@ const Batches = () => {
   };
 
   const handleEnroll = (batchId: string) => {
-    if (!user) {
-      window.location.href = '/auth';
-      return;
-    }
-    
-    // Scroll to the payment section
-    const paymentElement = document.getElementById(`payment-${batchId}`);
-    if (paymentElement) {
-      paymentElement.scrollIntoView({ behavior: 'smooth' });
+    const batch = sortedBatches?.find(b => b.id === batchId);
+    if (batch) {
+      setQrBatch(batch);
+      setQrOpen(true);
     }
   };
 
@@ -131,16 +127,7 @@ const Batches = () => {
     }
   });
 
-  if (selectedBatch) {
-    return (
-      <BatchContentView
-        batch={selectedBatch}
-        onBack={() => setSelectedBatch(null)}
-        onEnroll={handleEnroll}
-        isEnrolled={isEnrolled(selectedBatch.id)}
-      />
-    );
-  }
+  // We no longer render an inline content view here
 
   if (isLoading) {
     return (
@@ -389,34 +376,7 @@ const Batches = () => {
             </div>
           )}
 
-          {/* Payment sections for each batch */}
-          {sortedBatches?.map((batch) => {
-            const enrolled = isEnrolled(batch.id);
-            
-            if (enrolled || isAdmin) return null;
-            
-            return (
-              <div key={`payment-${batch.id}`} id={`payment-${batch.id}`} className="mb-12 scroll-mt-20">
-                <div className="max-w-lg mx-auto">
-                  <div className="glass rounded-3xl p-8 shadow-xl">
-                    <div className="text-center mb-6">
-                      <h3 className="text-2xl font-bold text-foreground mb-2 font-dejanire">
-                        Enroll in {batch.title}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        Complete your enrollment to start your fitness journey
-                      </p>
-                    </div>
-                    <RazorpayPayment
-                      batchId={batch.id}
-                      batchTitle={batch.title}
-                      amount={batch.price}
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {/* Removed payment sections under batch grid to avoid duplicate cards */}
 
           {/* CTA Section */}
           <div className="text-center glass rounded-3xl p-12 shadow-xl animate-fade-in border border-border/20">
@@ -460,6 +420,39 @@ const Batches = () => {
       <LazyLoadedComponent>
         <Footer />
       </LazyLoadedComponent>
+
+      {/* QR Code Payment Modal */}
+      <Dialog open={qrOpen} onOpenChange={setQrOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">
+              Scan to Pay{qrBatch ? ` • ₹${Number(qrBatch.price).toLocaleString('en-IN')}` : ''}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="rounded-xl overflow-hidden bg-muted">
+              <img src="/lovable-uploads/qr%20code.png" alt="Payment QR Code" className="w-full h-auto object-contain" />
+            </div>
+            {qrBatch && (
+              <div className="text-center text-sm text-muted-foreground">
+                You’re enrolling in <span className="font-medium text-foreground">{qrBatch.title}</span>.
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button className="flex-1 gradient-primary text-primary-foreground" onClick={() => setQrOpen(false)}>
+                Done
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 border-[#e3bd30] text-[#e3bd30] hover:bg-[#e3bd30] hover:text-black"
+                onClick={() => qrBatch && navigate(`/batches/${qrBatch.id}`)}
+              >
+                View Details
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

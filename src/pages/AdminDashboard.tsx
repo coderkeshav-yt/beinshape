@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Users, BookOpen, MessageCircle, Mail, TrendingUp, DollarSign } from 'lucide-react';
+import { Users, BookOpen, MessageCircle, Mail, TrendingUp, DollarSign, KeyRound } from 'lucide-react';
 import AdminBatchManager from '@/components/AdminBatchManager';
+import AdminAccessManager from '@/components/AdminAccessManager';
 import ContactSubmissions from '@/components/ContactSubmissions';
 import NewsletterSubscriptions from '@/components/NewsletterSubscriptions';
 import CircularNav from '@/components/CircularNav';
@@ -37,6 +38,8 @@ const AdminDashboard = () => {
         paidEnrollments
       };
     },
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 
   const StatCard = ({ title, value, icon: Icon, description, gradient }: any) => (
@@ -77,9 +80,10 @@ const AdminDashboard = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-4 glass border-0 h-14 rounded-2xl shadow-medium">
+            <TabsList className="grid w-full grid-cols-5 lg:grid-cols-5 glass border-0 h-14 rounded-2xl shadow-medium">
               <TabsTrigger value="overview" className="font-dejanire font-semibold text-base data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground rounded-xl">📊 Overview</TabsTrigger>
               <TabsTrigger value="batches" className="font-dejanire font-semibold text-base data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground rounded-xl">📚 Batches</TabsTrigger>
+              <TabsTrigger value="access" className="font-dejanire font-semibold text-base data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground rounded-xl">🔑 Access</TabsTrigger>
               <TabsTrigger value="contacts" className="font-dejanire font-semibold text-base data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground rounded-xl">💬 Contacts</TabsTrigger>
               <TabsTrigger value="newsletter" className="font-dejanire font-semibold text-base data-[state=active]:gradient-primary data-[state=active]:text-primary-foreground rounded-xl">📧 Newsletter</TabsTrigger>
             </TabsList>
@@ -180,6 +184,10 @@ const AdminDashboard = () => {
 
             <TabsContent value="batches">
               <AdminBatchManager />
+            </TabsContent>
+
+            <TabsContent value="access">
+              <AdminAccessManager />
             </TabsContent>
 
             <TabsContent value="contacts">
