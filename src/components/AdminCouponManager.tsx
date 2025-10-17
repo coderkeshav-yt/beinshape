@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import { Plus, Edit, Trash2, Tag } from 'lucide-react';
 
@@ -85,6 +86,23 @@ const AdminCouponManager = () => {
     } catch (error) {
       console.error('Error updating coupon:', error);
       toast.error('Failed to update coupon status');
+    }
+  };
+
+  const handleDeleteCoupon = async (id: string, code: string) => {
+    try {
+      const { error } = await supabase
+        .from('coupons')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast.success(`Coupon "${code}" deleted successfully!`);
+      queryClient.invalidateQueries({ queryKey: ['admin-coupons'] });
+    } catch (error) {
+      console.error('Error deleting coupon:', error);
+      toast.error('Failed to delete coupon');
     }
   };
 
@@ -221,9 +239,39 @@ const AdminCouponManager = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => toggleCouponStatus(coupon.id, coupon.is_active)}
+                        className={coupon.is_active ? "bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-300 font-medium" : "bg-green-50 hover:bg-green-100 text-green-700 border-green-300 font-medium"}
                       >
                         {coupon.is_active ? 'Deactivate' : 'Activate'}
                       </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="bg-red-50 hover:bg-red-100 text-red-700 border-red-300"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Coupon</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete the coupon "{coupon.code}"? 
+                              This action cannot be undone and will permanently remove the coupon.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteCoupon(coupon.id, coupon.code)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </div>
                 </CardContent>

@@ -127,7 +127,7 @@ const ContactSubmissions = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => setSelectedSubmission(null)}
-                  className="border-gray-300 dark:border-gray-700"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300 font-medium"
                 >
                   ← Back
                 </Button>
@@ -146,7 +146,7 @@ const ContactSubmissions = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => markAsRead(selectedSubmission.id)}
-                    className="border-gray-300 dark:border-gray-700"
+                    className="bg-green-50 hover:bg-green-100 text-green-700 border-green-300 font-medium"
                   >
                     <Check className="w-4 h-4 mr-1" />
                     Mark Read
@@ -156,6 +156,7 @@ const ContactSubmissions = () => {
                   variant="destructive"
                   size="sm"
                   onClick={() => deleteSubmission(selectedSubmission.id)}
+                  className="bg-red-600 hover:bg-red-700 text-white"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>

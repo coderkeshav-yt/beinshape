@@ -187,6 +187,7 @@ const BatchContentManager = ({ batchId, batchTitle }: BatchContentManagerProps) 
                             variant="outline"
                             size="sm"
                             onClick={() => setShowAddContent(chapter.id)}
+                            className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300 font-medium"
                           >
                             <Plus className="w-4 h-4 mr-1" />
                             Add Content
@@ -195,12 +196,17 @@ const BatchContentManager = ({ batchId, batchTitle }: BatchContentManagerProps) 
                             variant="outline"
                             size="sm"
                             onClick={() => setEditingChapter(chapter)}
+                            className="bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-300"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
-                              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="bg-red-50 hover:bg-red-100 text-red-700 border-red-300"
+                              >
                                 <Trash2 className="w-4 h-4" />
                               </Button>
                             </AlertDialogTrigger>
@@ -260,12 +266,17 @@ const BatchContentManager = ({ batchId, batchTitle }: BatchContentManagerProps) 
                                       variant="ghost"
                                       size="sm"
                                       onClick={() => setEditingContent(content)}
+                                      className="hover:bg-purple-100 hover:text-purple-700"
                                     >
                                       <Edit className="w-3 h-3" />
                                     </Button>
                                     <AlertDialog>
                                       <AlertDialogTrigger asChild>
-                                        <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                                        <Button 
+                                          variant="ghost" 
+                                          size="sm" 
+                                          className="text-red-600 hover:bg-red-100 hover:text-red-700"
+                                        >
                                           <Trash2 className="w-3 h-3" />
                                         </Button>
                                       </AlertDialogTrigger>

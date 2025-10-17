@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Users, BookOpen, MessageCircle, Mail, TrendingUp, DollarSign, KeyRound } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Users, BookOpen, MessageCircle, Mail, TrendingUp, DollarSign, ShieldAlert, Lock } from 'lucide-react';
 import AdminBatchManager from '@/components/AdminBatchManager';
 import AdminAccessManager from '@/components/AdminAccessManager';
 import ContactSubmissions from '@/components/ContactSubmissions';
@@ -13,7 +15,62 @@ import NewsletterSubscriptions from '@/components/NewsletterSubscriptions';
 import CircularNav from '@/components/CircularNav';
 
 const AdminDashboard = () => {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Check if user is admin with proper verification
+  const { data: adminStatus, isLoading: adminCheckLoading } = useQuery({
+    queryKey: ['admin-verification', user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('id', user.id)
+          .single();
+        
+        if (error) {
+          console.error('Error checking admin status:', error);
+          return false;
+        }
+        
+        return profile?.is_admin || false;
+      } catch (error) {
+        console.error('Admin verification error:', error);
+        return false;
+      }
+    },
+    enabled: !!user,
+    staleTime: 0, // Always fresh check
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
+
+  // Update admin status and verification state
+  useEffect(() => {
+    if (!authLoading && !adminCheckLoading) {
+      setIsAdmin(adminStatus || false);
+      setIsVerifyingAdmin(false);
+    }
+  }, [adminStatus, authLoading, adminCheckLoading]);
+
+  // Redirect non-admin users immediately
+  useEffect(() => {
+    if (!authLoading && !adminCheckLoading && !isVerifyingAdmin) {
+      if (!user) {
+        // Not logged in - redirect to auth
+        navigate('/auth', { replace: true });
+      } else if (!isAdmin) {
+        // Logged in but not admin - redirect to dashboard
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [user, isAdmin, authLoading, adminCheckLoading, isVerifyingAdmin, navigate]);
 
   // Fetch overview statistics
   const { data: stats } = useQuery({
@@ -59,6 +116,52 @@ const AdminDashboard = () => {
     </Card>
   );
 
+  // Show loading state while verifying admin status
+  if (authLoading || adminCheckLoading || isVerifyingAdmin) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mx-auto"></div>
+          <div className="space-y-2">
+            <p className="text-xl font-semibold text-foreground">Verifying Admin Access...</p>
+            <p className="text-sm text-muted-foreground">Please wait while we authenticate your credentials</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show unauthorized message if not admin (as fallback before redirect)
+  if (!user || !isAdmin) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="max-w-md w-full mx-4">
+          <Card className="border-2 border-destructive/50 shadow-2xl">
+            <CardContent className="pt-8 pb-8 text-center">
+              <div className="w-20 h-20 bg-destructive/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <ShieldAlert className="w-10 h-10 text-destructive" />
+              </div>
+              <h2 className="text-2xl font-bold text-foreground mb-3">Access Denied</h2>
+              <p className="text-muted-foreground mb-6">
+                You do not have permission to access the admin panel. This area is restricted to authorized administrators only.
+              </p>
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-6">
+                <Lock className="w-4 h-4" />
+                <span>Admin authentication required</span>
+              </div>
+              <Button 
+                onClick={() => navigate('/dashboard')} 
+                className="w-full gradient-primary text-primary-foreground font-semibold"
+              >
+                Return to Dashboard
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <CircularNav />
@@ -74,9 +177,6 @@ const AdminDashboard = () => {
             <p className="text-xl text-muted-foreground font-dejanire max-w-3xl mx-auto leading-relaxed">
               Manage your fitness platform, track performance metrics, and oversee all operations from this centralized hub
             </p>
-            <Badge className="gradient-accent text-accent-foreground border-0 px-6 py-3 text-base font-bold shadow-medium mt-6">
-              🛡️ Administrator Access
-            </Badge>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">

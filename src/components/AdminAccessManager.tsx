@@ -178,7 +178,11 @@ const AdminAccessManager = () => {
                   <Badge className={e.payment_status === 'paid' ? 'gradient-success text-white border-0' : 'gradient-warning text-black border-0'}>
                     {e.payment_status}
                   </Badge>
-                  <Button variant="outline" className="border-red-300 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20" onClick={() => revokeAccess(e.id)}>
+                  <Button 
+                    variant="outline" 
+                    className="bg-red-50 hover:bg-red-100 text-red-600 border-red-300 font-medium" 
+                    onClick={() => revokeAccess(e.id)}
+                  >
                     Revoke
                   </Button>
                 </div>

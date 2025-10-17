@@ -196,7 +196,10 @@ const NewsletterSubscriptions = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => toggleSubscriptionStatus(subscription.id, subscription.is_active)}
-                          className="flex items-center gap-2"
+                          className={subscription.is_active 
+                            ? "bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-300 font-medium flex items-center gap-2" 
+                            : "bg-green-50 hover:bg-green-100 text-green-700 border-green-300 font-medium flex items-center gap-2"
+                          }
                         >
                           {subscription.is_active ? (
                             <>

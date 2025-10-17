@@ -342,19 +342,6 @@ const Batches = () => {
                           </div>
                         )}
                       </div>
-
-                      {/* Progress Bar for Enrolled Users */}
-                      {(enrolled || isAdmin) && (
-                        <div className="mt-4 pt-4 border-t border-border/50">
-                          <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-                            <span>Progress</span>
-                            <span>75%</span>
-                          </div>
-                          <div className="w-full bg-muted rounded-full h-2">
-                            <div className="gradient-primary h-2 rounded-full" style={{ width: '75%' }}></div>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </CardContent>
                 </Card>

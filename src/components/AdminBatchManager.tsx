@@ -348,7 +348,7 @@ const AdminBatchManager = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => setManagingContentBatch(batch)}
-                          className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+                          className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-300 font-medium"
                         >
                           <Settings className="w-4 h-4 mr-1" />
                           Manage Content
@@ -357,6 +357,7 @@ const AdminBatchManager = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => toggleBatchStatus(batch.id, batch.is_active)}
+                          className={batch.is_active ? "bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-300 font-medium" : "bg-green-50 hover:bg-green-100 text-green-700 border-green-300 font-medium"}
                         >
                           {batch.is_active ? 'Deactivate' : 'Activate'}
                         </Button>
@@ -375,6 +376,7 @@ const AdminBatchManager = () => {
                                 price: batch.price.toString(),
                                 image_url: batch.image_url || ''
                               })}
+                              className="bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-300"
                             >
                               <Edit className="w-4 h-4" />
                             </Button>
@@ -427,7 +429,11 @@ const AdminBatchManager = () => {
                         </Dialog>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="bg-red-50 hover:bg-red-100 text-red-700 border-red-300"
+                            >
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </AlertDialogTrigger>
