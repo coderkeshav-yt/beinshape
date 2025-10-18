@@ -152,36 +152,11 @@ const Batches = () => {
           {/* Hero Section */}
           <div className="text-center mb-16 animate-fade-in">
             <div className="relative">
-              <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-6 font-dejanire animate-float">
+              <h1 className="text-4xl md:text-6xl font-bold text-gradient mb-6 font-dejanire">
                 Premium Fitness Programs
               </h1>
               <div className="absolute -top-8 -left-8 w-32 h-32 gradient-primary rounded-full blur-3xl opacity-20 animate-pulse"></div>
               <div className="absolute -bottom-4 -right-8 w-24 h-24 gradient-accent rounded-full blur-2xl opacity-30 animate-pulse"></div>
-            </div>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto font-dejanire leading-relaxed mb-8">
-              Transform your fitness journey with our expert-designed programs. Professional guidance, lifetime access, and community support.
-            </p>
-            
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center gap-6 mb-12">
-              <div className="glass px-6 py-3 rounded-xl">
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                  <span className="font-semibold">1000+ Success Stories</span>
-                </div>
-              </div>
-              <div className="glass px-6 py-3 rounded-xl">
-                <div className="flex items-center space-x-2">
-                  <Award className="w-5 h-5 text-primary" />
-                  <span className="font-semibold">Expert Trainers</span>
-                </div>
-              </div>
-              <div className="glass px-6 py-3 rounded-xl">
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-5 h-5 text-primary" />
-                  <span className="font-semibold">Lifetime Access</span>
-                </div>
-              </div>
             </div>
 
             {/* Search and Filter */}
