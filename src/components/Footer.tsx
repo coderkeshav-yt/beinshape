@@ -59,7 +59,7 @@ const Footer = () => {
           <div className="space-y-8">
             <div className="flex items-center space-x-3">
               <img 
-                src="/lovable-uploads/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
+                src="/Web_asset/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
                 alt="Be In Shape Logo" 
                 className="h-14 w-auto drop-shadow-lg"
               />

@@ -118,7 +118,7 @@ const RazorpayPayment = ({ batchId, batchTitle, amount, onSuccess }: RazorpayPay
         currency: 'INR',
         name: 'Be In Shape',
         description: `Enrollment for ${batchTitle}`,
-        image: '/lovable-uploads/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png',
+        image: '/Web_asset/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png',
         order_id: enrollment.id,
         handler: async function (response: any) {
           try {

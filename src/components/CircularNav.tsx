@@ -32,7 +32,7 @@ const CircularNav = () => {
             <div className="flex-shrink-0 w-48">
               <Link to="/" className="flex items-center">
                 <img 
-                  src="/lovable-uploads/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
+                  src="/Web_asset/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
                   alt="Be In Shape Logo" 
                   className="h-12 w-auto hover:scale-105 transition-transform duration-300"
                 />
@@ -94,7 +94,7 @@ const CircularNav = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
               <img 
-                src="/lovable-uploads/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
+                src="/Web_asset/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
                 alt="Be In Shape Logo" 
                 className="h-10 w-auto"
               />

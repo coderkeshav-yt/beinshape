@@ -127,7 +127,7 @@ const BatchDetail = () => {
             </DialogHeader>
             <div className="space-y-4">
               <div className="rounded-xl overflow-hidden bg-muted">
-                <img src="/lovable-uploads/qr%20code.png" alt="Payment QR Code" className="w-full h-auto object-contain" />
+                <img src="/Web_asset/qr%20code.png" alt="Payment QR Code" className="w-full h-auto object-contain" />
               </div>
               <div className="text-center text-sm text-muted-foreground">
                 You’re enrolling in <span className="font-medium text-foreground">{batch.title}</span>.

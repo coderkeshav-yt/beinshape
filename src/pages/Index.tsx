@@ -147,7 +147,7 @@ const Index = () => {
           <div className="space-y-4">
             <div className="rounded-xl overflow-hidden bg-muted">
               <img
-                src="/lovable-uploads/qr%20code.png"
+                src="/Web_asset/qr%20code.png"
                 alt="Payment QR Code"
                 className="w-full h-auto object-contain"
               />
