@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, Play, BookOpen, Trophy, Clock, Users, Star, CheckCircle, Lock } from 'lucide-react';
+import { ArrowLeft, Play, BookOpen, Trophy, Clock, Users, Star, CheckCircle, Lock, Bookmark } from 'lucide-react';
 import { isRLSPolicyError } from '@/lib/utils';
 
 // Function to convert YouTube URL to embed URL
@@ -210,90 +210,169 @@ const BatchDetailPage = ({ batch, onBack, onEnroll, isEnrolled }: BatchDetailPag
               )}
             </div>
 
-            <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
-              <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white">Chapter Content</CardTitle>
-                <CardDescription className="text-gray-600 dark:text-gray-400">
-                  {selectedChapter.title} - Learning Materials
-                </CardDescription>
+            <Card className="bg-white dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-0.5">
+              <CardHeader className="px-6 sm:px-8 pt-6 pb-4 sm:py-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                      Chapter Content
+                    </CardTitle>
+                    <CardDescription className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
+                      {selectedChapter.title} - Learning Materials
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1.5 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-sm font-medium rounded-full border border-yellow-100 dark:border-yellow-800/50">
+                      {chapterContents.length} {chapterContents.length === 1 ? 'Lesson' : 'Lessons'}
+                    </span>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-4 sm:px-6 pb-6 sm:pb-8">
                 {contentLoading ? (
-                  <div className="flex justify-center items-center py-12">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#e3bd30]"></div>
+                  <div className="grid grid-cols-1 gap-6">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 animate-pulse">
+                        <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full mb-2"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+                        <div className="mt-4 h-40 bg-gray-200 dark:bg-gray-700 rounded-xl"></div>
+                      </div>
+                    ))}
                   </div>
                 ) : chapterContents.length > 0 ? (
                   <div className="space-y-6">
                     {chapterContents.map((content, index) => (
-                      <div key={content.id} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
-                        <div className="flex items-start gap-4">
-                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#e3bd30]/20 flex items-center justify-center text-[#e3bd30] font-bold">
+                      <div 
+                        key={content.id} 
+                        className="group relative border-2 border-gray-100 dark:border-gray-800 rounded-xl p-4 sm:p-6 hover:border-yellow-300/50 dark:hover:border-yellow-500/30 transition-all duration-300 bg-white dark:bg-gray-800/50 hover:shadow-lg"
+                      >
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                          <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 flex items-center justify-center text-yellow-500 font-bold text-lg sm:text-xl">
                             {index + 1}
                           </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                              {content.title}
-                            </h3>
+                          <div className="flex-1 min-w-0">
+                            <div className="mb-3">
+                              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white line-clamp-2">
+                                {content.title}
+                              </h3>
+                            </div>
+                            
                             {content.description && (
-                              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                              <p className="text-base text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
                                 {content.description}
                               </p>
                             )}
+                            
                             {content.video_url && (() => {
                               const embedUrl = getEmbedUrl(content.video_url);
                               
                               if (embedUrl) {
                                 // For YouTube videos
                                 return (
-                                  <div className="mt-4 aspect-video bg-black rounded-lg overflow-hidden">
-                                    <iframe
-                                      src={embedUrl}
-                                      className="w-full h-full"
-                                      frameBorder="0"
-                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                      allowFullScreen
-                                      title={content.title}
-                                    ></iframe>
+                                  <div className="mt-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+                                    <div className="relative w-full h-0 pb-[56.25%] bg-black/5 dark:bg-black/20">
+                                      <iframe
+                                        src={embedUrl}
+                                        className="absolute top-0 left-0 w-full h-full"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        title={content.title}
+                                      />
+                                    </div>
                                   </div>
                                 );
                               } else if (content.video_url.match(/\.(mp4|webm|ogg)$/i)) {
                                 // For direct video files
                                 return (
-                                  <div className="mt-4">
-                                    <video 
-                                      controls 
-                                      className="w-full rounded-lg"
-                                      src={content.video_url}
-                                    >
-                                      Your browser does not support the video tag.
-                                    </video>
-                                  </div>
-                                );
-                              } else {
-                                // For other video URLs, show a link
-                                return (
-                                  <div className="mt-4">
-                                    <a 
-                                      href={content.video_url} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer"
-                                      className="text-blue-600 dark:text-blue-400 hover:underline"
-                                    >
-                                      Watch Video (Opens in new tab)
-                                    </a>
+                                  <div className="video-card mt-4 rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-shadow duration-300">
+                                    <div className="relative w-full h-0 pb-[56.25%] bg-black/5 dark:bg-black/20 group">
+                                      <video 
+                                        controls 
+                                        className="absolute top-0 left-0 w-full h-full object-cover cursor-pointer"
+                                        src={content.video_url}
+                                        onClick={async (e) => {
+                                          const video = e.currentTarget as HTMLVideoElement & {
+                                            webkitRequestFullscreen?: () => Promise<void>;
+                                            msRequestFullscreen?: () => Promise<void>;
+                                          };
+                                          try {
+                                            if (!document.fullscreenElement) {
+                                              if (video.requestFullscreen) {
+                                                await video.requestFullscreen();
+                                              } else if (video.webkitRequestFullscreen) { /* Safari */
+                                                await video.webkitRequestFullscreen();
+                                              } else if (video.msRequestFullscreen) { /* IE11 */
+                                                await video.msRequestFullscreen();
+                                              }
+                                              await video.play();
+                                            }
+                                          } catch (err) {
+                                            console.error('Error attempting to enable fullscreen:', err);
+                                            video.play().catch(e => console.error('Error playing video:', e));
+                                          }
+                                        }}
+                                        onPlay={(e) => {
+                                          // Ensure video is in fullscreen when playing
+                                          const video = e.currentTarget as HTMLVideoElement & {
+                                            webkitRequestFullscreen?: () => Promise<void>;
+                                            msRequestFullscreen?: () => Promise<void>;
+                                          };
+                                          if (!document.fullscreenElement && video.requestFullscreen) {
+                                            video.requestFullscreen().catch(e => {
+                                              console.log('Fullscreen request failed:', e);
+                                            });
+                                          }
+                                        }}
+                                      >
+                                        Your browser does not support the video tag.
+                                      </video>
+                                      <div 
+                                        className="absolute inset-0 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20"
+                                        onClick={(e) => {
+                                          const video = e.currentTarget.closest('.video-card')?.querySelector('video');
+                                          if (video) {
+                                            video.play().catch(e => {
+                                              console.error('Error playing video:', e);
+                                            });
+                                          }
+                                        }}
+                                      >
+                                        <div className="bg-white/90 dark:bg-gray-800/90 p-3 rounded-full shadow-lg transform transition-transform duration-300 group-hover:scale-110">
+                                          <Play className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
                                 );
                               }
+                              return null;
                             })()}
+                            
                             {content.tags && content.tags.length > 0 && (
                               <div className="mt-4 flex flex-wrap gap-2">
                                 {content.tags.map((tag, tagIndex) => (
-                                  <Badge key={tagIndex} variant="outline" className="text-xs">
+                                  <span 
+                                    key={tagIndex}
+                                    className="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600"
+                                  >
                                     {tag}
-                                  </Badge>
+                                  </span>
                                 ))}
                               </div>
                             )}
+                            
+                            {/* Video player section with zoom effect on hover */}
+                            <style jsx>{`
+                              .video-container {
+                                transition: all 0.3s ease;
+                              }
+                              .video-container:hover {
+                                transform: scale(1.02);
+                                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                              }
+                            `}</style>
                           </div>
                         </div>
                       </div>
