@@ -183,11 +183,21 @@ const Contact = () => {
                 </div>
               ))}
 
-              {/* Map placeholder */}
+              {/* Google Maps */}
               <div className="bg-white/80 dark:bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 dark:border-white/10 shadow-lg">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 font-dejanire">Find Us</h3>
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-xl h-48 flex items-center justify-center">
-                  <p className="text-gray-500 dark:text-gray-400 font-dejanire">Interactive Map Coming Soon</p>
+                <div className="rounded-xl overflow-hidden">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28650.67761897247!2d85.85673067431637!3d26.153226899999993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39edb9d3e45501a7%3A0xd6ab757a0b3e35d7!2sBe%20In%20Shape%20Gym%20%7C%20Best%20Gym%20In%20Darbhanga!5e0!3m2!1sen!2sin!4v1761631887450!5m2!1sen!2sin" 
+                    width="100%" 
+                    height="300" 
+                    style={{border: 0}} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="rounded-xl"
+                    title="Be In Shape Gym Location"
+                  ></iframe>
                 </div>
               </div>
             </div>

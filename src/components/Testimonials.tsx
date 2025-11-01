@@ -5,19 +5,19 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: 'Sarah Johnson',
+      name: 'Rajesh Kumar',
       avatar: 'https://images.unsplash.com/photo-1494790108755-2616b332c3d8?auto=format&fit=crop&w=200&h=200',
       description: 'Be In Shape transformed my life completely. The trainers are incredible and the programs are perfectly structured for maximum results.'
     },
     {
       id: 2,
-      name: 'Mike Chen',
+      name: 'Jon Doe',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200',
       description: 'The strength training program helped me reach new personal records. Highly recommend to anyone serious about fitness and health.'
     },
     {
       id: 3,
-      name: 'Emily Rodriguez',
+      name: 'Ravi Jha',
       avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&h=200',
       description: 'Perfect for my busy schedule. The nutrition guidance and flexible training options work amazingly well for working professionals.'
     },
@@ -29,7 +29,7 @@ const Testimonials = () => {
     },
     {
       id: 5,
-      name: 'Lisa Thompson',
+      name: 'Sourav',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200',
       description: 'The community support and professional trainers create an environment where you can truly excel and achieve your fitness goals.'
     }
@@ -59,3 +59,4 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+
