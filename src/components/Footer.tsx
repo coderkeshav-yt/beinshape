@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, Heart } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, Heart, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
@@ -59,7 +59,7 @@ const Footer = () => {
           <div className="space-y-8">
             <div className="flex items-center space-x-3">
               <img 
-                src="/lovable-uploads/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
+                src="/Web_asset/1588d38a-7e4d-4f9f-a394-e79adb26ec99.png" 
                 alt="Be In Shape Logo" 
                 className="h-14 w-auto drop-shadow-lg"
               />
@@ -124,7 +124,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-6">
               {[
-                { icon: Phone, text: '++91 8317434600', href: 'tel:+15551234567' },
+                { icon: Phone, text: '+91 8317434600', href: 'tel:+918317434600' },
                 { icon: Mail, text: 'info@beinshape.com', href: 'mailto:info@beinshape.com' },
                 { icon: MapPin, text: '123 Fitness Street, Gym City', href: '#' }
               ].map(({ icon: Icon, text, href }, index) => (
@@ -178,10 +178,17 @@ const Footer = () => {
             <p className="text-gray-400 font-dejanire text-lg">
               &copy; 2025 Be In Shape. All rights reserved.
             </p>
-            <div className="flex items-center space-x-3 text-gray-400 font-dejanire text-lg">
-              <span>Made with</span>
-              <Heart className="w-5 h-5 text-red-500 fill-current animate-pulse" />
-              <span>for fitness enthusiasts worldwide</span>
+            <div className="text-gray-400 font-dejanire text-lg">
+              <span>Designed and developed by </span>
+              <a 
+                href="https://www.cybrida.in/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-[#e3bd30] hover:text-[#f4d03f] font-bold transition-colors duration-300 flex items-center"
+              >
+                Cybrida
+                <ExternalLink className="w-4 h-4 ml-1.5 opacity-70 group-hover:opacity-100 transition-opacity" />
+              </a>
             </div>
           </div>
         </div>

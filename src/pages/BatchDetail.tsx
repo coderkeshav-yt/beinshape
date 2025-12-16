@@ -6,12 +6,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import BatchDetailPage from '@/components/BatchDetailPage';
 import CircularNav from '@/components/CircularNav';
-import RazorpayPayment from '@/components/RazorpayPayment';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+// Removed RazorpayPayment import as bottom payment section is no longer shown
 
 const BatchDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [qrOpen, setQrOpen] = useState(false);
 
   const { data: batch, isLoading } = useQuery({
     queryKey: ['batch', id],
@@ -63,11 +66,7 @@ const BatchDetail = () => {
   };
 
   const handleEnroll = () => {
-    // Scroll to the bottom where the payment component is
-    const paymentElement = document.getElementById('payment-section');
-    if (paymentElement) {
-      paymentElement.scrollIntoView({ behavior: 'smooth' });
-    }
+    setQrOpen(true);
   };
 
   if (isLoading) {
@@ -118,19 +117,36 @@ const BatchDetail = () => {
           onEnroll={handleEnroll}
           isEnrolled={!!isEnrolled}
         />
-        {!isEnrolled && (
-          <div id="payment-section" className="bg-gray-50 dark:bg-gray-900 py-12">
-            <div className="container mx-auto px-4">
-              <div className="max-w-md mx-auto">
-                <RazorpayPayment
-                  batchId={batch.id}
-                  batchTitle={batch.title}
-                  amount={batch.price}
-                />
+        {/* QR Code Payment Modal */}
+        <Dialog open={qrOpen} onOpenChange={setQrOpen}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center">
+                Scan to Pay • ₹{Number(batch.price).toLocaleString('en-IN')}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="rounded-xl overflow-hidden bg-muted">
+                <img src="/Web_asset/qr%20code.png" alt="Payment QR Code" className="w-full h-auto object-contain" />
+              </div>
+              <div className="text-center text-sm text-muted-foreground">
+                You’re enrolling in <span className="font-medium text-foreground">{batch.title}</span>.
+              </div>
+              <div className="flex gap-2">
+                <Button className="flex-1 bg-gradient-to-r from-[#e3bd30] to-[#f4d03f] text-black" onClick={() => setQrOpen(false)}>
+                  Done
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 border-[#e3bd30] text-[#e3bd30] hover:bg-[#e3bd30] hover:text-black"
+                  onClick={() => navigate('/batches')}
+                >
+                  Back to Batches
+                </Button>
               </div>
             </div>
-          </div>
-        )}
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );

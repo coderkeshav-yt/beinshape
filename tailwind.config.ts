@@ -1,7 +1,7 @@
 
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
 	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
@@ -20,8 +20,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'dejanire': ['Dejanire Headline', 'serif'],
-				'sans': ['Dejanire Headline', 'ui-sans-serif', 'system-ui'],
+				'sans': ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -98,4 +97,6 @@ export default {
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+};
+
+export default config;

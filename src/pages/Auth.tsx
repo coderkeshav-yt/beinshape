@@ -2,13 +2,13 @@
 import { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Eye, EyeOff, X, Check, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, X, Check, AlertCircle, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,6 +22,7 @@ const Auth = () => {
     city: '',
   });
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState({
     hasUppercase: false,
     hasLowercase: false,
@@ -30,7 +31,7 @@ const Auth = () => {
     minLength: false,
   });
   
-  const { user, signIn } = useAuth();
+  const { user, signIn, signInWithGoogle } = useAuth();
 
   if (user) {
     return <Navigate to="/dashboard" replace />;
@@ -53,6 +54,21 @@ const Auth = () => {
     setFormData({ ...formData, password });
     if (!isLogin) {
       validatePassword(password);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      const { error } = await signInWithGoogle();
+      if (error) {
+        toast.error(error.message || 'Failed to sign in with Google');
+      }
+    } catch (error) {
+      console.error('Google sign in error:', error);
+      toast.error('An error occurred during Google sign in');
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -167,6 +183,55 @@ const Auth = () => {
         </CardHeader>
 
         <CardContent>
+          <div className="space-y-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-gray-300 dark:border-gray-700"></span>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-black text-gray-500 dark:text-gray-400">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={googleLoading}
+              className="w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#e3bd30] h-12 flex items-center justify-center space-x-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5"
+            >
+              {googleLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin text-[#e3bd30]" />
+              ) : (
+                <>
+                  <div className="bg-white p-1.5 rounded-full">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+                      <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                        <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.28426 53.749 C -8.52426 55.049 -9.20426 56.159 -10.1843 56.859 L -10.2043 56.859 L -6.02426 59.934 C -4.72426 58.889 -3.264 56.979 -3.264 54.529 C -3.264 53.739 -3.334 52.969 -3.454 52.239 C -3.344 52.009 -3.264 51.759 -3.264 51.509 Z"/>
+                        <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.80426 62.159 -6.02426 60.159 L -10.1843 56.859 C -11.4443 57.789 -13.004 58.249 -14.754 58.249 C -17.514 58.249 -19.8943 56.739 -20.8543 54.239 L -24.9843 54.239 L -25.0143 54.289 C -23.2043 58.419 -19.504 63.239 -14.754 63.239 Z"/>
+                        <path fill="#FBBC05" d="M -20.8543 54.239 C -21.1243 53.539 -21.2743 52.779 -21.2743 51.999 C -21.2743 51.219 -21.1143 50.459 -20.8543 49.759 L -20.8543 45.709 L -25.0143 45.709 C -25.7843 47.139 -26.2443 48.769 -26.2443 50.509 C -26.2443 52.249 -25.7843 53.859 -25.0143 55.289 L -20.8543 54.239 Z"/>
+                        <path fill="#EA4335" d="M -14.754 42.749 C -13.1143 42.719 -11.4743 43.259 -10.1843 44.139 L -6.02426 40.969 C -8.80426 38.989 -11.514 37.759 -14.754 37.759 C -19.504 37.759 -23.2043 42.579 -25.0143 46.709 L -20.8543 49.759 C -19.8943 47.259 -17.514 45.749 -14.754 45.749 C -13.004 45.749 -11.4443 46.209 -10.1843 47.139 L -6.02426 43.859 C -5.07426 43.159 -3.86426 42.739 -2.65426 42.619 C -3.334 41.769 -3.85426 40.789 -4.20426 39.709 C -4.55426 38.629 -4.73426 37.489 -4.73426 36.349 C -4.73426 35.209 -4.55426 34.069 -4.20426 32.989 C -3.86426 31.909 -3.334 30.929 -2.65426 30.079 L -10.1843 30.079 L -14.754 30.079 L -14.754 42.749 Z"/>
+                      </g>
+                    </svg>
+                  </div>
+                  <span className="font-medium text-gray-700 dark:text-gray-200">Continue with Google</span>
+                </>
+              )}
+            </Button>
+          </div>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-300 dark:border-gray-700"></span>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-black text-gray-500 dark:text-gray-400">
+                Or continue with email
+              </span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
               <>
@@ -273,11 +338,29 @@ const Auth = () => {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-[#e3bd30] to-[#f4d03f] hover:from-[#d4a82a] hover:to-[#e6c235] text-black font-semibold h-12 text-lg shadow-lg hover:shadow-xl transition-all duration-300 font-dejanire"
+              className="w-full bg-gradient-to-r from-[#e3bd30] to-[#f4d03f] hover:from-[#d4b02a] hover:to-[#e5c13a] text-black font-medium py-3 px-4 rounded-md shadow-lg transform transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#e3bd30] h-12 mt-6"
               disabled={loading}
             >
-              {loading ? 'Loading...' : (isLogin ? 'Sign In' : 'Sign Up')}
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin inline-block" />
+                  {isLogin ? 'Signing in...' : 'Creating account...'}
+                </>
+              ) : isLogin ? 'Sign In' : 'Create Account'}
             </Button>
+
+            <div className="text-center mt-4">
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                {isLogin ? "Don't have an account? " : 'Already have an account? '}
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-[#e3bd30] hover:underline font-medium focus:outline-none"
+                >
+                  {isLogin ? 'Sign up' : 'Sign in'}
+                </button>
+              </span>
+            </div>
           </form>
         </CardContent>
       </Card>

@@ -1,9 +1,13 @@
 
+import { useEffect } from 'react';
 import CircularNav from '@/components/CircularNav';
 import Footer from '@/components/Footer';
 import { Award, Users, Target, Heart, Star, CheckCircle, Zap, Trophy } from 'lucide-react';
 
 const About = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
   const team = [
     {
       name: "Ravi prakash",

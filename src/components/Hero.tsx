@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 
 // Optimize images with proper dimensions
 const HERO_IMAGES = {
-  light: 'https://t3.ftcdn.net/jpg/05/62/71/86/360_F_562718625_BM93noP9JDAR8kiBPfRy0h4WTvUwYXNH.jpg',
-  dark: 'https://t3.ftcdn.net/jpg/05/62/71/86/360_F_562718625_BM93noP9JDAR8kiBPfRy0h4WTvUwYXNH.jpg'
+  light: '/Web_asset/hero_section.jpg',
+  dark: '/Web_asset/hero_section.jpg'
 };
 
 const Hero = () => {

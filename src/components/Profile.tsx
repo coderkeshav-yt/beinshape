@@ -16,6 +16,7 @@ interface UserProfile {
   state: string;
   city: string;
   is_admin: boolean;
+  created_at: string;
 }
 
 const Profile = () => {
@@ -303,7 +304,9 @@ const Profile = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Member Since:</span>
-                      <span className="text-gray-900 dark:text-white font-medium">2024</span>
+                      <span className="text-gray-900 dark:text-white font-medium">
+                        {profile.created_at ? new Date(profile.created_at).getFullYear() : new Date().getFullYear()}
+                      </span>
                     </div>
                   </div>
                 </div>
