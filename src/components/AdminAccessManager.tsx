@@ -51,13 +51,31 @@ const AdminAccessManager = () => {
   const { data: recentEnrollments } = useQuery<any[]>({
     queryKey: ['recent-enrollments'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data: enrollments, error } = await supabase
         .from('enrollments')
         .select('id, user_id, batch_id, payment_status, enrolled_at, batches(title)')
         .order('enrolled_at', { ascending: false })
         .limit(10);
+
       if (error) throw error;
-      return data || [];
+
+      if (enrollments && enrollments.length > 0) {
+        const userIds = Array.from(new Set(enrollments.map((e) => e.user_id).filter(Boolean)));
+
+        if (userIds.length > 0) {
+          const { data: profiles } = await supabase
+            .from('profiles')
+            .select('id, full_name')
+            .in('id', userIds);
+
+          return enrollments.map((e) => ({
+            ...e,
+            profiles: profiles?.find((p) => p.id === e.user_id) || null
+          }));
+        }
+      }
+
+      return enrollments || [];
     },
     refetchOnWindowFocus: true,
     staleTime: 0,
@@ -178,9 +196,9 @@ const AdminAccessManager = () => {
                   <Badge className={e.payment_status === 'paid' ? 'gradient-success text-white border-0' : 'gradient-warning text-black border-0'}>
                     {e.payment_status}
                   </Badge>
-                  <Button 
-                    variant="outline" 
-                    className="bg-red-50 hover:bg-red-100 text-red-600 border-red-300 font-medium" 
+                  <Button
+                    variant="outline"
+                    className="bg-red-50 hover:bg-red-100 text-red-600 border-red-300 font-medium"
                     onClick={() => revokeAccess(e.id)}
                   >
                     Revoke
